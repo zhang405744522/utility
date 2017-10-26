@@ -1,0 +1,26 @@
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+
+35 2 * * 5 bash /data/servers/push-nlba/nlba-sdk/script/ApInfoCrontab.sh >> /dev/null 2>&1
+#黑名单入缓存,每周执行一次
+35 2 * * 1 bash /data/servers/push-nlba/nlba-sdk/script/BlackListCrontab.sh >> /dev/null 2>&1
+
+#log归档
+5/* * * * * bash /data/servers/push-nlba/nlba-sdk/script/ReportCrontab.sh start >> /dev/null 2>&1
+
+#*/1 * * * * bash /data/servers/push-nlba/nlba-sdk/mqworker/mqworker_monitor.sh check >> /dev/null 2>&1
+
+
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+*/1 * * * * bash /data/servers/push-nlba/nlba-sdk/mqworker/mqworker_monitor.sh check
+#log归档
+5/* * * * * bash /data/servers/push-nlba/nlba-sdk/script/ReportCrontab.sh start >> /dev/null 2>&1
+* * * * * cd /data/changbin/segment && /home/halo_op/anaconda2/bin/python main.py && rm ./log/segment`date -d '1 days ago' +\%Y\%m\%d`*.log
+*/1 * * * * bash /data/servers/push-nlba/nlba-sdk/script/TrackingToRedis.sh start

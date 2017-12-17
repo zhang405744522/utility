@@ -1,0 +1,57 @@
+#include "stdafx.h"
+
+
+#include <vector>  
+#include <string>
+#include <map>
+#include <thread>
+#include <algorithm>
+#include <iostream>  
+
+using namespace std;
+
+int out_str(int a) {
+	cout << a << endl;
+	return 1;
+}
+
+
+void display()
+{
+	void * addr_func = out_str;
+	using func_type = int(int);
+	std::function<int(int)> ptr_temp = std::function<int(int)>( (func_type*)addr_func);
+	ptr_temp(4);
+}
+
+
+class Dllparse{
+public:
+	Dllparse(const std::string path_array[], unsigned int path_number): dll_number(path_number){
+		try {
+			dll_handle = new unsigned int[dll_number];
+			for(int index = 0; index <= path_number; index++)
+			dlopen(path_array[num], RTLD_LAZY);
+		}
+		catch (...) {
+		
+		}
+	}
+
+private:
+
+	void dlopen() {
+	
+	}
+	
+private:
+	unsigned int dll_number;
+	void* dll_handle;
+	std::map<std::string, void*> sym_map_;
+
+};
+int main()
+{	
+	display();
+    return 0;
+}
